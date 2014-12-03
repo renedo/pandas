@@ -23,6 +23,7 @@ WidePanel = Panel
 from pandas.core.indexing import IndexSlice
 from pandas.tseries.offsets import DateOffset
 from pandas.tseries.tools import to_datetime
+from pandas.tseries.tools import combine_datetime
 from pandas.tseries.index import (DatetimeIndex, Timestamp,
                                   date_range, bdate_range)
 from pandas.tseries.tdi import TimedeltaIndex, Timedelta

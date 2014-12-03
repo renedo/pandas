@@ -11,7 +11,7 @@ randn = np.random.randn
 
 from pandas import (Index, Series, TimeSeries, DataFrame,
                     isnull, date_range, Timestamp, Period, DatetimeIndex,
-                    Int64Index, to_datetime, bdate_range, Float64Index, TimedeltaIndex)
+                    Int64Index, to_datetime, bdate_range, Float64Index, TimedeltaIndex, combine_datetime)
 
 import pandas.core.datetools as datetools
 import pandas.tseries.offsets as offsets
@@ -4365,6 +4365,19 @@ class TestDateTimeIndexToJulianDate(tm.TestCase):
                         freq='S').to_julian_date()
         self.assertIsInstance(r2, Float64Index)
         tm.assert_index_equal(r1, r2)
+
+
+class TestCombineDateTime(tm.TestCase):
+    def test_simplecombine(self):
+        r1 = np.array(['1990-01-01', 
+                    '1991-02-01',
+                    '1992-03-01', 
+                    '1993-04-01'])
+        r2 = combine_datetime([1990,1991,1992,1993],
+                              [1,2,3,4],
+                              [1,2,3,4])
+        self.assertIsInstance(r2,r1)
+
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],

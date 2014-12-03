@@ -297,8 +297,8 @@ def to_datetime(arg, errors='ignore', dayfirst=False, utc=None, box=True,
                 return DatetimeIndex._simple_new(values, None, tz=tz)
             except (ValueError, TypeError):
                 raise e
-
-    if arg is None:
+    return "bing"
+    """if arg is None:
         return arg
     elif isinstance(arg, Timestamp):
         return arg
@@ -309,7 +309,7 @@ def to_datetime(arg, errors='ignore', dayfirst=False, utc=None, box=True,
         return _convert_listlike(arg, box, format)
 
     return _convert_listlike(np.array([ arg ]), box, format)[0]
-
+    """
 class DateParseError(ValueError):
     pass
 
@@ -577,3 +577,17 @@ def ole2datetime(oledt):
         raise ValueError("Value is outside of acceptable range: %s " % val)
 
     return OLE_TIME_ZERO + timedelta(days=val)
+
+
+def combine_datetime(years, months=1, days=1, hours=None, minutes=None,seconds=None,
+                    milliseconds=None, microseconds=None, nanoseconds=None,weeks=None):
+    years = np.asarray(years) - 1970
+    months = np.asarray(months) - 1
+    days = np.asarray(days) - 1
+    types = ('<M8[Y]', '<m8[M]', '<m8[D]', '<m8[h]','<m8[m]', 
+            '<m8[s]', '<m8[ms]', '<m8[us]', '<m8[ns]','<m8[W]')
+    vals = (years, months, days, hours, minutes, seconds,
+            milliseconds, microseconds, nanoseconds, weeks)
+    return sum(np.asarray(v, dtype=t) for t, v in zip(types, vals)
+               if v is not None)
+
